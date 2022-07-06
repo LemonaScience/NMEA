@@ -17,7 +17,9 @@ typedef std::vector<std::string> Fields_t;
 class SentenceBase
 {
 public:
-    SentenceBase();
+    SentenceBase(){
+
+    }
     std::string talkerID;
     std::string sentenceID;
     Fields_t fields;

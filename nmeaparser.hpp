@@ -27,7 +27,6 @@ public:
 
     Callback callback;
     C *owner;
-    std::queue<char> waitQueue;
     std::queue<char> currentBuffer;
     ParserState currentState = STATE_StartDelimiter;
     char currentChecksum = 0;
@@ -81,8 +80,6 @@ public:
 
     void parse(char c)
     {
-        waitQueue.push(c);
-
         if(c == START_DELIMITER){
             currentState = STATE_StartDelimiter;
         }
