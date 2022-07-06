@@ -1,8 +1,7 @@
 #ifndef NMEAPARSER_HPP
 #define NMEAPARSER_HPP
 
-#include <queue>
-
+#include <string>
 #define START_DELIMITER '$'
 
 #define TO_STR(x) #x
@@ -23,11 +22,11 @@ class NmeaParser
 {
 public:
 
-    typedef void (C::*Callback) (std::queue<char>);
+    typedef void (C::*Callback) (std::string);
 
     Callback callback;
     C *owner;
-    std::queue<char> currentBuffer;
+    std::string currentBuffer;
     ParserState currentState = STATE_StartDelimiter;
     char currentChecksum = 0;
     char expectedCheksum = 0;
@@ -72,8 +71,8 @@ public:
     }
 
     NmeaParser(C* o, Callback c) :
-        owner(o),
-        callback(c)
+        callback(c),
+        owner(o)
     {
 
     }
@@ -89,8 +88,8 @@ public:
         case STATE_StartDelimiter:
         {
             if(c == START_DELIMITER){
-                currentBuffer = std::queue<char>();
-                currentBuffer.push(c);
+                currentBuffer = "";
+                currentBuffer.push_back(c);
                 currentChecksum = 0;
                 currentState = STATE_Fields;
             } else {
@@ -106,7 +105,7 @@ public:
                 return;
             } else {
                 if(c == '*'){
-                    currentBuffer.push(c);
+                    currentBuffer.push_back(c);
                     currentState = STATE_Checksum_0;
                     return;
                 } else {
@@ -122,7 +121,7 @@ public:
                 //fail
                 return;
             } else {
-                currentBuffer.push(c);
+                currentBuffer.push_back(c);
                 currentState = STATE_Checksum_1;
                 expectedCheksum = getNum(c);
                 return;
@@ -135,7 +134,7 @@ public:
                 //fail
                 return;
             } else {
-                currentBuffer.push(c);
+                currentBuffer.push_back(c);
                 expectedCheksum <<= 4;
                 expectedCheksum |= getNum(c);
 
@@ -154,7 +153,7 @@ public:
         case nmea::STATE_Terminator_CR:
         {
             if(c == '\r'){
-                currentBuffer.push(c);
+                currentBuffer.push_back(c);
                 currentState = STATE_Terminator_LF;
             } else {
                 //fail
@@ -165,7 +164,7 @@ public:
         case nmea::STATE_Terminator_LF:
         {
             if(c == '\n'){
-                currentBuffer.push(c);
+                currentBuffer.push_back(c);
                 currentState = STATE_StartDelimiter;
 
                 foundValidNmea();
@@ -185,13 +184,14 @@ public:
 
     void putDataChar2Buffer(char c)
     {
-        currentBuffer.push(c);
+        currentBuffer.push_back(c);
         currentChecksum ^= c;
     }
 
     void foundValidNmea()
     {
-        (owner->*callback)(currentBuffer);
+        int len = currentBuffer.length();
+        (owner->*callback)(currentBuffer.substr(1, len - 6));
     }
 };
 

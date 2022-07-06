@@ -4,7 +4,7 @@
 #include "sentencebase.hpp"
 
 
-namespace vbw {
+namespace nmea::vbw {
 
 enum FieldsEnum{
     LONGITUDINAL_WATER_SPEED = 0,

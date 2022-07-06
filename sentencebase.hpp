@@ -1,11 +1,13 @@
 #ifndef SENTENCEBASE_HPP
 #define SENTENCEBASE_HPP
 
+
 #include <string>
 #include <vector>
 #include <utility>
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 
 #define NORTH 'N'
 #define SOUTH 'S'
@@ -13,6 +15,14 @@
 #define WEST 'W'
 
 typedef std::vector<std::string> Fields_t;
+
+namespace nmea {
+
+struct Time {
+    int hour;
+    int minute;
+    double second;
+};
 
 class SentenceBase
 {
@@ -71,10 +81,16 @@ public:
 
     std::string timeTo_hhmmss(int hour, int minute, double second){
         char tmp[50];
-        sprintf(tmp, "%02d%02d%05.2f", hour, minute, second);
+        sprintf(tmp, "%02d%02d%05.2lf", hour, minute, second);
         std::stringstream ss;
         ss << tmp;
         return ss.str();
+    }
+
+    Time hhmmssToTime(std::string hhmmss){
+        Time res;
+        sscanf(hhmmss.c_str(), "%02d%02d%lf", &res.hour, &res.minute, &res.second);
+        return res;
     }
 
     std::pair<std::string, char> latDegreeTo_ddmm(double degree){
@@ -87,10 +103,19 @@ public:
         }
         double minute = degree * 60;
         char tmp[50];
-        sprintf(tmp, "%02d%08.5f", dd, minute);
+        sprintf(tmp, "%02d%08.5lf", dd, minute);
         std::stringstream ss;
         ss << tmp;
         return std::make_pair(ss.str(), res);
+    }
+
+    double ddmmToLatDegree(std::pair<std::string, char> in){
+        double degree;
+        int dd;
+        double minute;
+        sscanf(in.first.c_str(), "%02d%lf", &dd, &minute);
+        degree = dd + minute / 60;
+        return (in.second == NORTH ? 1 : -1) * degree;
     }
 
     std::pair<std::string, char> longDegreeTo_ddmm(double degree){
@@ -103,10 +128,19 @@ public:
         }
         double minute = degree * 60;
         char tmp[50];
-        sprintf(tmp, "%03d%08.5f", dd, minute);
+        sprintf(tmp, "%03d%08.5lf", dd, minute);
         std::stringstream ss;
         ss << tmp;
         return std::make_pair(ss.str(), res);
+    }
+
+    double ddmmToLongDegree(std::pair<std::string, char> in){
+        double degree;
+        int dd;
+        double minute;
+        sscanf(in.first.c_str(), "%03d%lf", &dd, &minute);
+        degree = dd + minute / 60;
+        return (in.second == EAST ? 1 : -1) * degree;
     }
 
     std::string generateSentence(){
@@ -124,6 +158,29 @@ public:
         res << "\r\n";
         return res.str();
     }
+
+
+
+    //https://stackoverflow.com/a/14266139
+    static Fields_t split(std::string sentence, std::string delimiter = ","){
+        Fields_t res;
+
+        size_t pos = 0;
+        std::string token;
+        while ((pos = sentence.find(delimiter)) != std::string::npos) {
+            token = sentence.substr(0, pos);
+            res.push_back(token);
+            sentence.erase(0, pos + delimiter.length());
+        }
+        res.push_back(sentence);
+
+        return res;
+    }
+
+    //https://stackoverflow.com/a/14266139
+    static SentenceBase* parseSentence(std::string sentence);
 };
 
+
+}
 #endif // SENTENCEBASE_HPP
