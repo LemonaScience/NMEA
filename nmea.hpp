@@ -38,6 +38,12 @@ public:
         }
     }
 
+    void parse(u8* str, int len){
+        for(unsigned i = 0; i < len; i++){
+            parser.parse(str[i]);
+        }
+    }
+
     static void defaultGGAcallback(void *ptr){
         std::cout << "Default GGA Callback\n";
         auto g = ((gga::GGA_Sentence*)ptr);
@@ -58,14 +64,17 @@ public:
         std::cout << "getAgeOfDifferentialGpsData: " << g->getAgeOfDifferentialGpsData() << std::endl;
         std::cout << "getDifferentialReferenceStation: " << g->getDifferentialReferenceStation() << std::endl;
 
+        std::cout << "Regen received: " << g->generateSentence() << std::endl;
     }
 
     void _onParse(std::string s){
+    	printf("_onparse: %s\r\n", s.c_str());
         auto sb = SentenceBase::parseSentence(s);
         if(sb){
             if(sb->sentenceID == "GGA" && callbacks[GGA]){
                 callbacks[GGA](sb);
             }
+            delete sb;
         }
     }
 };

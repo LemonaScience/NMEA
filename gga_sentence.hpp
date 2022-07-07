@@ -3,8 +3,10 @@
 
 #include "sentencebase.hpp"
 
-namespace nmea::gga {
+namespace nmea{
 
+namespace gga {
+    
 enum FieldsEnum{
     UTC = 0,
     LATITUDE,
@@ -181,6 +183,7 @@ public:
 
 }
 
+}
 
 
 #endif // GGA_SENTENCE_H

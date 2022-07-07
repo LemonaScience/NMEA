@@ -5,9 +5,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include <iomanip>
-#include <sstream>
-#include <iostream>
+
 
 #define NORTH 'N'
 #define SOUTH 'S'

@@ -1,6 +1,11 @@
 #include "sentencebase.hpp"
 #include "gga_sentence.hpp"
 
+#undef str
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+
 using namespace nmea;
 
 SentenceBase::SentenceBase(){
@@ -41,7 +46,8 @@ std::string SentenceBase::toStringFloat(double val, int precision){
 
 std::string SentenceBase::join(const std::vector<std::string> &v, const std::string &delimiter) {
     std::string out;
-    if (auto i = v.begin(), e = v.end(); i != e) {
+    auto i = v.begin(), e = v.end();
+    if ( i != e) {
         out += *i++;
         for (; i != e; ++i) out.append(delimiter).append(*i);
     }
@@ -144,10 +150,15 @@ Fields_t SentenceBase::split(std::string sentence, std::string delimiter){
 }
 
 SentenceBase *SentenceBase::parseSentence(std::string sentence){
+
+//	printf("before split\r\n");
     auto res = split(sentence);
+//    printf("after split\r\n");
 
     std::string talkerID_tmp = res[0].substr(0, 2);
+    printf("talkerID_tmp: %s\r\n", talkerID_tmp.c_str());
     std::string sentenceID_tmp = res[0].substr(2, 3);
+    printf("sentenceID_tmp: %s\r\n", sentenceID_tmp.c_str());
 
     SentenceBase *retVal = nullptr;
 
@@ -162,10 +173,13 @@ SentenceBase *SentenceBase::parseSentence(std::string sentence){
     //.
     //.
 
-    if(retVal){
-        for(int i = 0; i < res.size(); i++){
+    if(retVal && retVal->fields.size() + 1 == res.size()){
+        for(unsigned i = 0; i < retVal->fields.size(); i++){
             retVal->fields[i] = res[i + 1];
         }
+    } else if(retVal) {
+    	delete retVal;
+    	retVal = nullptr;
     }
 
     return retVal;
