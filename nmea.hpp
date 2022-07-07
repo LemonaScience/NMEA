@@ -3,8 +3,9 @@
 
 #include "nmeaparser.hpp"
 #include "gga_sentence.hpp"
+#include <iostream>
 
-
+#include <stdint.h>
 
 namespace nmea{
 
@@ -38,8 +39,8 @@ public:
         }
     }
 
-    void parse(u8* str, int len){
-        for(unsigned i = 0; i < len; i++){
+    void parse(uint8_t* str, int len){
+        for(int i = 0; i < len; i++){
             parser.parse(str[i]);
         }
     }
