@@ -39,7 +39,7 @@ public:
         }
     }
 
-    void parse(uint8_t* str, int len){
+    void parse(char* str, int len){
         for(int i = 0; i < len; i++){
             parser.parse(str[i]);
         }
@@ -65,11 +65,11 @@ public:
         std::cout << "getAgeOfDifferentialGpsData: " << g->getAgeOfDifferentialGpsData() << std::endl;
         std::cout << "getDifferentialReferenceStation: " << g->getDifferentialReferenceStation() << std::endl;
 
-        std::cout << "Regen received: " << g->generateSentence() << std::endl;
+//        std::cout << "Regen received: " << g->generateSentence() << std::endl;
     }
 
     void _onParse(std::string s){
-    	printf("_onparse: %s\r\n", s.c_str());
+//    	printf("_onparse: %s\r\n", s.c_str());
         auto sb = SentenceBase::parseSentence(s);
         if(sb){
             if(sb->sentenceID == "GGA" && callbacks[GGA]){

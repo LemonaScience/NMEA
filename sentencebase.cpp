@@ -156,7 +156,7 @@ SentenceBase *SentenceBase::parseSentence(std::string sentence){
 //    printf("after split\r\n");
 
     std::string talkerID_tmp = res[0].substr(0, 2);
-    printf("talkerID_tmp: %s\r\n", talkerID_tmp.c_str());
+//    printf("talkerID_tmp: %s\r\n", talkerID_tmp.c_str());
     std::string sentenceID_tmp = res[0].substr(2, 3);
     printf("sentenceID_tmp: %s\r\n", sentenceID_tmp.c_str());
 
