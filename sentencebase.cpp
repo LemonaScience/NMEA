@@ -44,14 +44,14 @@ std::string SentenceBase::toStringFloat(double val, int precision){
     return ss.str();
 }
 
-std::string SentenceBase::join(const std::vector<std::string> &v, const std::string &delimiter) {
-    std::string out;
-    auto i = v.begin(), e = v.end();
-    if ( i != e) {
-        out += *i++;
-        for (; i != e; ++i) out.append(delimiter).append(*i);
-    }
-    return out;
+std::string SentenceBase::join(const std::vector<std::string> &v, const std::string delimiter) {
+	std::stringstream ss;
+	unsigned i = 0 ;
+	for(; i + 1 < v.size(); i++){
+		ss << v[i] << delimiter;
+	}
+	ss << v[i];
+    return ss.str();
 }
 
 std::string SentenceBase::timeTo_hhmmss(int hour, int minute, double second){
@@ -118,7 +118,7 @@ double SentenceBase::ddmmToLongDegree(std::pair<std::string, char> in){
     return (in.second == EAST ? 1 : -1) * degree;
 }
 
-std::string SentenceBase::generateSentence(){
+std::string SentenceBase::generateSentence(bool addChecksum){
     std::stringstream res;
     res << "$";
     std::stringstream checksumIncluded;
@@ -129,7 +129,10 @@ std::string SentenceBase::generateSentence(){
     for(auto &c: checksumIncluded.str()){
         checksum ^= c;
     }
-    res << checksumIncluded.str() << "*" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << checksum;
+    res << checksumIncluded.str();
+    if(addChecksum){
+        res << "*" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << checksum;
+    }
     res << "\r\n";
     return res.str();
 }

@@ -38,8 +38,7 @@ public:
     std::string toStringFloat(double val, int precision);
 
 
-    //https://stackoverflow.com/a/40497964
-    std::string join(const std::vector<std::string> & v, const std::string & delimiter = ",");
+    std::string join(const std::vector<std::string> & v, const std::string delimiter = ",");
 
 
     std::string timeTo_hhmmss(int hour, int minute, double second);
@@ -54,7 +53,7 @@ public:
 
     double ddmmToLongDegree(std::pair<std::string, char> in);
 
-    std::string generateSentence();
+    std::string generateSentence(bool addChecksum = true);
 
 
 
