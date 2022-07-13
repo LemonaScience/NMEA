@@ -28,8 +28,7 @@ public:
 
     Callback callback;
     C *owner;
-    char currentBuffer[500];
-    int currentPointer = 0;
+    std::string currentBuffer;
 
     ParserState currentState = STATE_StartDelimiter;
     char currentChecksum = 0;
@@ -94,8 +93,8 @@ public:
         case STATE_StartDelimiter:
         {
             if(c == START_DELIMITER){
-                currentPointer = 0;
-                currentBuffer[currentPointer++] = c;
+                currentBuffer = "";
+                currentBuffer.push_back(c);
                 currentChecksum = 0;
                 currentState = STATE_Fields;
             } else {
@@ -111,7 +110,7 @@ public:
                 return;
             } else {
                 if(c == '*'){
-                	currentBuffer[currentPointer++] = c;
+                	currentBuffer.push_back(c);
                     currentState = STATE_Checksum_0;
                     return;
                 } else {
@@ -127,7 +126,7 @@ public:
                 //fail
                 return;
             } else {
-            	currentBuffer[currentPointer++] = c;
+            	currentBuffer.push_back(c);
                 currentState = STATE_Checksum_1;
                 expectedCheksum = getNum(c);
                 return;
@@ -140,7 +139,7 @@ public:
                 //fail
                 return;
             } else {
-            	currentBuffer[currentPointer++] = c;
+            	currentBuffer.push_back(c);
                 expectedCheksum <<= 4;
                 expectedCheksum |= getNum(c);
 
@@ -159,7 +158,7 @@ public:
         case nmea::STATE_Terminator_CR:
         {
             if(c == '\r'){
-            	currentBuffer[currentPointer++] = c;
+            	currentBuffer.push_back(c);
                 currentState = STATE_Terminator_LF;
             } else {
                 //fail
@@ -170,7 +169,7 @@ public:
         case nmea::STATE_Terminator_LF:
         {
             if(c == '\n'){
-            	currentBuffer[currentPointer++] = c;
+            	currentBuffer.push_back(c);
                 currentState = STATE_StartDelimiter;
 
                 foundValidNmea();
@@ -190,17 +189,17 @@ public:
 
     void putDataChar2Buffer(char c)
     {
-    	currentBuffer[currentPointer++] = c;
+    	currentBuffer.push_back(c);
         currentChecksum ^= c;
     }
 
     void foundValidNmea()
     {
-    	int len = currentPointer;
+    	int len = currentBuffer.length();
 //    	std::cout << "foundValidNmea :)\r\n";
 //    	std::cout << "foundValidNmea: " << std::string(currentBuffer) << std::endl;
 
-        (owner->*callback)(std::string(currentBuffer + 1, len - 6));
+        (owner->*callback)(currentBuffer.substr(1, len - 6));
     }
 };
 
