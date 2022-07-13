@@ -9,7 +9,7 @@ namespace ggaifu {
     
 enum FieldsEnum{
     UTC = 0,
-	SPARE,
+	SPARE, //eger dokumna dogru ise SPARE kaldirilacak
     LATITUDE,
     N_or_S,
     LONGITUDE,

@@ -12,6 +12,8 @@ namespace ggaifu {
 	std::string GGA_Sentence::timeTo_hhmmss(int hour, int minute, double second){
 	    char tmp[50];
 	    sprintf(tmp, "%02d%02d%04.1lf", hour, minute, second);
+	    //eger dokumna dogru ise
+	    //sprintf(tmp, "%02d%02d%05.2lf", hour, minute, second);
 	    std::stringstream ss;
 	    ss << tmp;
 	    return ss.str();
