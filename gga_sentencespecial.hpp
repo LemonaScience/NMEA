@@ -26,19 +26,6 @@ enum FieldsEnum{
     __FieldsEnum__MAX
 };
 
-enum GpsQualityIndicator {
-    FIX_NOT_AVAILABLE = 0,
-    GPS_FIX,
-    DIFFERENTIAL_GPS_FIX,
-    PPS_FIX,
-    REAL_TIME_KINEMATIC,
-    FLOAT_RTK,
-    ESTIMATED,
-    MANUAL_INPUT_MODE,
-    SIMULATION_MODE,
-};
-
-
 
 class GGA_Sentence : public SentenceBase
 {
@@ -49,6 +36,11 @@ public:
 	std::pair<std::string, char> longDegreeTo_ddmm(double degree);
 
 
+    GGA_Sentence()
+    {
+    	GGA_Sentence("--");
+    }
+
     GGA_Sentence(std::string talkerID)
     {
         this->fields = Fields_t(__FieldsEnum__MAX);
@@ -56,7 +48,7 @@ public:
         this->sentenceID = "GGA";
 
 
-        setTime(0,0,0);
+        setTime({0,0,0});
         setLatitude(0);
         setLongitude(0);
         setGpsQualityIndicator(FIX_NOT_AVAILABLE);
@@ -71,8 +63,8 @@ public:
         setDifferentialReferenceStation(0);
     }
 
-    void setTime(int hour, int minute, double second){
-        fields[UTC] = timeTo_hhmmss(hour, minute, second);
+    void setTime(Time time){
+        fields[UTC] = timeTo_hhmmss(time.hour, time.minute, time.second);
     }
 
     void setLatitude(double lat){

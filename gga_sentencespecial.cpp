@@ -21,8 +21,9 @@ namespace ggaifu {
 	    int dd = degree;
 	    degree -= dd;
 	    char res = NORTH;
-	    if(dd < 0){
+	    if((dd+degree) < 0){
 	        dd = -dd;
+	        degree = -degree;
 	        res = SOUTH;
 	    }
 	    double minute = degree * 60;
@@ -38,8 +39,9 @@ namespace ggaifu {
 	    int dd = degree;
 	    degree -= dd;
 	    char res = EAST;
-	    if(dd < 0){
+	    if((dd+degree) < 0){
 	        dd = -dd;
+	        degree = -degree;
 	        res = WEST;
 	    }
 	    double minute = degree * 60;

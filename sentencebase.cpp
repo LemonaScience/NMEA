@@ -72,8 +72,9 @@ std::pair<std::string, char> SentenceBase::latDegreeTo_ddmm(double degree){
     int dd = degree;
     degree -= dd;
     char res = NORTH;
-    if(dd < 0){
+    if((dd+degree) < 0){
         dd = -dd;
+        degree = -degree;
         res = SOUTH;
     }
     double minute = degree * 60;
@@ -97,8 +98,9 @@ std::pair<std::string, char> SentenceBase::longDegreeTo_ddmm(double degree){
     int dd = degree;
     degree -= dd;
     char res = EAST;
-    if(dd < 0){
+    if((dd+degree) < 0){
         dd = -dd;
+        degree = -degree;
         res = WEST;
     }
     double minute = degree * 60;
@@ -152,6 +154,8 @@ Fields_t SentenceBase::split(std::string sentence, std::string delimiter){
     return res;
 }
 
+void nonBlockingPrint(std::string s);
+
 SentenceBase *SentenceBase::parseSentence(std::string sentence){
 
 //	printf("before split\r\n");
@@ -161,7 +165,7 @@ SentenceBase *SentenceBase::parseSentence(std::string sentence){
     std::string talkerID_tmp = res[0].substr(0, 2);
 //    printf("talkerID_tmp: %s\r\n", talkerID_tmp.c_str());
     std::string sentenceID_tmp = res[0].substr(2, 3);
-    printf("sentenceID_tmp: %s\r\n", sentenceID_tmp.c_str());
+//    printf("sentenceID_tmp: %s\r\n", sentenceID_tmp.c_str());
 
     SentenceBase *retVal = nullptr;
 

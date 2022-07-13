@@ -16,6 +16,18 @@ typedef std::vector<std::string> Fields_t;
 
 namespace nmea {
 
+enum GpsQualityIndicator {
+    FIX_NOT_AVAILABLE = 0,
+    GPS_FIX,
+    DIFFERENTIAL_GPS_FIX,
+    PPS_FIX,
+    REAL_TIME_KINEMATIC,
+    FLOAT_RTK,
+    ESTIMATED,
+    MANUAL_INPUT_MODE,
+    SIMULATION_MODE,
+};
+
 struct Time {
     int hour;
     int minute;
