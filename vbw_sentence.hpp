@@ -37,16 +37,15 @@ public:
         this->sentenceID = "VBW";
     }
 
-
     void setWaterSpeed(double longitudinal, double transverse, Validity validity = VALID, int precision = 3){
-        fields[LONGITUDINAL_WATER_SPEED] = toStringFloat(longitudinal, 2);
-        fields[TRANSVERSE_WATER_SPEED] = toStringFloat(transverse, 2);
+        fields[LONGITUDINAL_WATER_SPEED] = toStringFloat(longitudinal, precision);
+        fields[TRANSVERSE_WATER_SPEED] = toStringFloat(transverse, precision);
         fields[STATUS_WATER_SPEED] = validity;
     }
 
     void setGroundSpeed(double longitudinal, double transverse, Validity validity = VALID, int precision = 3){
-        fields[LONGITUDINAL_GROUND_SPEED] = toStringFloat(longitudinal, 2);
-        fields[TRANSVERSE_GROUND_SPEED] = toStringFloat(transverse, 2);
+        fields[LONGITUDINAL_GROUND_SPEED] = toStringFloat(longitudinal, precision);
+        fields[TRANSVERSE_GROUND_SPEED] = toStringFloat(transverse, precision);
         fields[STATUS_GROUND_SPEED] = validity;
     }
 };
