@@ -44,6 +44,36 @@ std::string SentenceBase::toStringFloat(double val, int precision){
     return ss.str();
 }
 
+
+
+
+std::string SentenceBase::toStringFloat(double val, int precisionInt, int precisionFrac){
+    std::stringstream ss;
+    int width = precisionInt + precisionFrac + 1; //dot
+    if(val < 0){
+        ss << '-';
+        val = -val;
+    }
+
+    ss << std::fixed << std::setw(width) << std::setfill('0') << std::setprecision(precisionFrac) << val;
+    return ss.str();
+}
+
+
+std::string SentenceBase::toStringFloatSigned(double val, int precisionInt, int precisionFrac){
+    std::stringstream ss;
+    int width = precisionInt + precisionFrac + 1; //dot
+    if(val < 0){
+        ss << '-';
+        val = -val;
+    } else {
+    	ss << '+';
+    }
+
+    ss << std::fixed << std::setw(width) << std::setfill('0') << std::setprecision(precisionFrac) << val;
+    return ss.str();
+}
+
 std::string SentenceBase::join(const std::vector<std::string> &v, const std::string delimiter) {
 	std::stringstream ss;
 	unsigned i = 0 ;

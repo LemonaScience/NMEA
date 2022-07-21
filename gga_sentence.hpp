@@ -30,7 +30,7 @@ enum FieldsEnum{
 class GGA_Sentence : public SentenceBase
 {
 public:
-    GGA_Sentence(std::string talkerID)
+    GGA_Sentence(std::string talkerID = "--")
     {
         this->fields = Fields_t(__FieldsEnum__MAX);
         this->talkerID = talkerID;

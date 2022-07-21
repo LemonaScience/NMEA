@@ -49,6 +49,11 @@ public:
 
     std::string toStringFloat(double val, int precision);
 
+    std::string toStringFloat(double val, int precisionInt, int precisionFrac);
+
+    std::string toStringFloatSigned(double val, int precisionInt, int precisionFrac);
+
+
 
     std::string join(const std::vector<std::string> & v, const std::string delimiter = ",");
 
