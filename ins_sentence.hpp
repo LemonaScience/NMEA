@@ -5,6 +5,7 @@
 #include "attitudeMessage.hpp"
 #include "b_c_Message.hpp"
 #include "gga_sentence.hpp"
+#include <iostream>
 
 namespace nmea{
 
@@ -93,9 +94,13 @@ public:
 
         	fields[VELOCITY_EAST] = toStringFloatSigned(0, 2, 5);
         }
+
+
+        fields[VALIDITIES] = uInt2Hex(validities, 4);
     }
 private:
     std::string timeToString(int hour, int minute, double second);
+    std::string uInt2Hex(unsigned val, int width);
 
     double limitter(double val, double lim){
     	int sign = 1;
@@ -104,7 +109,7 @@ private:
     		val = -val;
     	}
 
-    	if(lim > val){
+    	if(val > lim){
     		val = lim - 0.001;
     	}
     	return val * sign;
